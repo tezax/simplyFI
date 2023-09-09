@@ -1,0 +1,91 @@
+class Graph {
+  constructor() {
+    this.adjList = new Map();
+  }
+
+  addEdge(u, v) {
+    if (!this.adjList.has(u)) {
+      this.adjList.set(u, []);
+    }
+    this.adjList.get(u).push(v);
+  }
+
+  dfs(start) {
+    const visited = new Set();
+    const itinerary = [];
+
+    const dfsHelper = (node) => {
+      visited.add(node);
+      itinerary.push(node);
+
+      if (this.adjList.has(node)) {
+        for (const neighbor of this.adjList.get(node)) {
+          if (!visited.has(neighbor)) {
+            dfsHelper(neighbor);
+          }
+        }
+      }
+    };
+
+    dfsHelper(start);
+    return itinerary;
+  }
+}
+
+// Create a graph and add the ticket connections
+const graph = new Graph();
+graph.addEdge('Kiev', 'Prague');
+graph.addEdge('Prague', 'Zurich');
+graph.addEdge('Zurich', 'Amsterdam');
+graph.addEdge('Amsterdam', 'Barcelona');
+graph.addEdge('Barcelona', 'Berlin');
+graph.addEdge('Berlin', 'Kiev');
+graph.addEdge('Berlin', 'Amsterdam');
+graph.addEdge('Paris', 'Skopje');
+graph.addEdge('Skopje', 'Paris');
+
+// Start the journey from Kiev
+const startCity = 'Kiev';
+const itinerary = graph.dfs(startCity);
+
+console.log('Route your son traveled:', itinerary.join(' -> '));
+
+Explanation: This code is an example of a depth-first search (DFS) traversal on a graph to find an itinerary or route between cities. It models a scenario where a traveler starts their journey in one city and visits other cities based on predefined connections between cities. The goal is to find the complete route the traveler takes.
+
+Here's an explanation of the code:
+
+Graph Class:
+
+constructor(): Initializes a graph represented using an adjacency list, where each city is a vertex (node), and the connections between cities are represented as edges.
+
+addEdge(u, v): Adds an edge between two cities u and v. It checks if u already exists in the adjacency list; if not, it adds u with an empty array as its value and then pushes v into the array.
+
+Depth-First Search (DFS):
+
+dfs(start): Performs a depth-first search starting from the start city.
+
+visited: A set to keep track of visited cities.
+
+itinerary: An array to store the route or itinerary of the traveler.
+
+dfsHelper(node): This is a recursive function that explores the graph starting from a given node. It adds the node to the visited set and the itinerary. Then, it checks if the node has neighbors (adjacent cities) and recursively visits those neighbors that haven't been visited yet.
+
+dfsHelper(start): Calls the dfsHelper function with the start city to initiate the DFS traversal.
+
+Returns the itinerary, which is an array of cities visited in the order they were traversed.
+
+Creating and Populating the Graph:
+
+An instance of the Graph class is created, representing the cities and their connections.
+
+Connections between cities are established using graph.addEdge().
+
+Starting the Journey:
+
+The traveler's journey begins in the city of 'Kiev'.
+
+The DFS traversal is initiated from 'Kiev', and the itinerary is recorded.
+
+Displaying the Itinerary:
+
+The itinerary, which is an array of cities, is logged to the console, joined with ' -> ' to create a readable route.
